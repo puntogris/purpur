@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.example.purpur">
+          package="com.puntogris.purpur">
 
     <application
             android:allowBackup="true"
@@ -8,9 +8,8 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name="com.example.purpur.MainActivity">
+            android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -19,7 +18,7 @@
         </activity>
         <service
                 android:enabled="true"
-                android:name="com.example.purpur.MusicService" />
+                android:name="com.puntogris.purpur.MusicService" />
     </application>
 
 </manifest>

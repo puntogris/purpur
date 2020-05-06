@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Purpur</string>
+    <string name="post_game_text1">Lograste un total de</string>
+    <string name="post_game_text2">puntos</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
