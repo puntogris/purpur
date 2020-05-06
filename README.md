@@ -6,5 +6,7 @@ En esta App utilize:
  -Kotlin
  
  -Dibujado en Canvas
+ 
  -Fragmentos
+ 
  -Servicios para la Musica
