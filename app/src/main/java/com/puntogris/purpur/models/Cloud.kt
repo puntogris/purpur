@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 class Cloud @Inject constructor(var posx: Double = 0.0, var posy: Double = 0.0, var velocity: Double = -10.0, val context: Context){
 
-    val cloudImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.cloud)
+    val image: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.cloud)
 
     fun updateVelocity(){
         posy += velocity
@@ -29,7 +29,7 @@ class Cloud @Inject constructor(var posx: Double = 0.0, var posy: Double = 0.0, 
     }
 
     fun draw(canvas: Canvas){
-        canvas.drawBitmap(cloudImage,posx.toFloat() - (cloudImage.width / 2),posy.toFloat(),null)
+        canvas.drawBitmap(image,posx.toFloat() - (image.width / 2),posy.toFloat(),null)
     }
 
     fun resetValues(){

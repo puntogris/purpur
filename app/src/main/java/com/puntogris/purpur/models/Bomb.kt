@@ -12,26 +12,26 @@ import javax.inject.Singleton
 
 class Bomb @Inject constructor(var posx : Float = -500F, var posy: Float = 200F, var visibility: Boolean = false, context: Context?){
 
-    val bombImage: Bitmap = BitmapFactory.decodeResource(context?.resources, R.raw.bombimage)
-    val bombSound: MediaPlayer = MediaPlayer.create(context, R.raw.bombsound)
-    val crashBomb: MediaPlayer = MediaPlayer.create(context, R.raw.crashbombsound)
+    private val image: Bitmap = BitmapFactory.decodeResource(context?.resources, R.raw.bombimage)
+    val imageScaled: Bitmap = Bitmap.createScaledBitmap(image,170,190,true)
 
-    fun updatePosY(){
+    val bombSound: MediaPlayer = MediaPlayer.create(context, R.raw.bombsound)
+    private val crashBomb: MediaPlayer = MediaPlayer.create(context, R.raw.crashbombsound)
+
+    private fun updatePosY(){
         posy += 7
     }
 
-    fun restoreToPosYIni(){
+    private fun restoreToPosYIni(){
         posy = 200f
     }
-    fun getRandomPosX(width: Int){
-        if(!visibility){
-            posx = (100..width - 100).random().toFloat()
-        }
+    private fun getRandomPosX(width: Int){
+        if(!visibility) posx = (100..width - 100).random().toFloat()
     }
-    fun visible(){
+    private fun visible(){
         visibility = true
     }
-    fun hide(){
+    private fun hide(){
         visibility = false
     }
     fun outOfScreen(height: Int) = posy > height
@@ -39,8 +39,9 @@ class Bomb @Inject constructor(var posx : Float = -500F, var posy: Float = 200F,
     fun inScreen(rocket: Rocket) = rocket.posx > posx && visibility
 
     fun draw(canvas: Canvas){
-        val rocketImageScaled: Bitmap = Bitmap.createScaledBitmap(bombImage,500,260,true)
-        canvas.drawBitmap(rocketImageScaled,posx-(rocketImageScaled.width / 2),posy,null)
+        bombSound.start()
+        updatePosY()
+        canvas.drawBitmap(imageScaled,posx - (imageScaled.width / 2),posy,null)
     }
 
     fun resetValues(){
@@ -49,7 +50,17 @@ class Bomb @Inject constructor(var posx : Float = -500F, var posy: Float = 200F,
         hide()
     }
 
+    fun explodeSequence(){
+        bombSound.stop()
+        bombSound.prepareAsync()
+        crashBomb.start()
+        restoreToPosYIni()
+        hide()
+    }
 
-
+    fun drop(width: Int){
+        getRandomPosX(width)
+        visible()
+    }
 
 }

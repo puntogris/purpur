@@ -15,10 +15,6 @@ class Bird @Inject constructor(var posx: Double = 0.0 ,var posy: Double = 500.0 
     val collisionSoundBirdCloud: MediaPlayer = MediaPlayer.create(context, R.raw.bouncesound)
     private var animationCounter = 0
 
-    fun updatePosX(dist: Int){
-        posx += dist
-    }
-
     fun updateVelocity(){
         velocity += 0.5
         posy += velocity
@@ -42,7 +38,6 @@ class Bird @Inject constructor(var posx: Double = 0.0 ,var posy: Double = 500.0 
     fun draw(canvas: Canvas){
         changeImageBirdFps()
         canvas.drawBitmap(birdImageFinal, posx.toFloat() - (birdImageFinal.width /2),posy.toFloat(),null)
-
     }
 
     private fun changeImageBirdFps(){
@@ -59,5 +54,12 @@ class Bird @Inject constructor(var posx: Double = 0.0 ,var posy: Double = 500.0 
 
     fun imageWidth() = birdImageFinal.width
     fun imageHeight() = birdImageFinal.height
+
+    fun moveLeft(){
+        posx -= 2
+    }
+    fun moveRight(){
+        posx += 2
+    }
 
 }
