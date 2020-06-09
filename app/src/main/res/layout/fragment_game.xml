@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:id="@+id/gameFragmentLayout"
-             android:layout_height="match_parent"
-             tools:context=".GameFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@drawable/ic_maingame"
+            android:id="@+id/gameFragmentLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:context=".ui.GameFragment">
 
-        <view android:layout_width="match_parent" android:layout_height="match_parent" class="com.puntogris.purpur.Game"
-              android:id="@+id/gameView"/>
+        <com.puntogris.purpur.ui.GameView
+                android:id="@+id/gameView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</layout>

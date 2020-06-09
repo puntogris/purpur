@@ -1,12 +1,11 @@
 # purpur
-Juego en el que vas rebotando en nubes con un pajarito para obtener el maximo puntaje y tenes que esquivar una bomba que tira un cohete al cruza la pantalla.
+Game where you play a bird and bounce in clouds, also there is a rocket that throws bombs at you.
 
-En esta App utilize:
-
- -Kotlin
+Used in this project:</br>
+  * Kotlin
+  * MVVM
+  * Canvas
+  * Music
  
- -Dibujado en Canvas
- 
- -Fragmentos
- 
- -Servicios para la Musica
+![N|Solid](https://github.com/puntogris/purpur/blob/master/screenshots/1.png)
+![N|Solid](https://github.com/puntogris/purpur/blob/master/screenshots/2.png)
