@@ -3,8 +3,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+                name="viewModel"
+                type="com.puntogris.purpur.ui.GameViewModel" />
+        <variable
+                name="postGameFragment"
+                type="com.puntogris.purpur.ui.PostGameFragment" />
+    </data>
+
        <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/ic_postgamebg"
+            android:background="@drawable/ic_postgame"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -16,7 +25,7 @@
                    android:id="@+id/postGameText1"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="104dp"
+                   android:layout_marginTop="116dp"
                    android:layout_weight="15"
                    android:gravity="center|bottom"
                    android:text="@string/post_game_text1"
@@ -29,9 +38,10 @@
                    android:id="@+id/scoreTextView"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="32dp"
+                   android:layout_marginTop="45dp"
                    android:layout_weight="10"
                    android:gravity="center"
+                   android:text="@{String.valueOf(viewModel.playerScore)}"
                    android:textSize="50sp"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +51,7 @@
                    android:id="@+id/postGameText2"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="20dp"
+                   android:layout_marginTop="45dp"
                    android:layout_weight="15"
                    android:gravity="center|top"
                    android:text="@string/post_game_text2"
@@ -50,15 +60,22 @@
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
 
-           <Button
-                   android:id="@+id/playAgainButton"
-                   android:layout_width="match_parent"
+
+           <ImageView
+                   android:id="@+id/imageView"
+                   android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginBottom="276dp"
-                   android:layout_weight="25"
-                   android:background="@android:color/transparent"
-                   android:gravity="center"
+                   android:layout_marginBottom="224dp"
+                   android:adjustViewBounds="true"
+                   android:background="@drawable/ripple"
+                   android:clickable="true"
+                   android:focusable="true"
+                   android:onClick="@{() -> postGameFragment.navigateToGame()}"
+                   android:tint="@android:color/transparent"
+                   android:tintMode="src_in"
                    app:layout_constraintBottom_toBottomOf="parent"
-                   tools:layout_editor_absoluteX="16dp" />
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:srcCompat="@drawable/ic_play_button" />
        </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

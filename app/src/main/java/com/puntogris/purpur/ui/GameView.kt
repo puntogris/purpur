@@ -11,21 +11,23 @@ import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.puntogris.purpur.App
 import com.puntogris.purpur.R
+import com.puntogris.purpur.di.AppComponent
+import com.puntogris.purpur.di.injector
 import com.puntogris.purpur.models.Bird
 import com.puntogris.purpur.models.Bomb
 import com.puntogris.purpur.models.Cloud
 import com.puntogris.purpur.models.Rocket
 import kotlinx.android.synthetic.main.fragment_game.view.*
+import javax.inject.Inject
 import kotlin.math.abs
 
 class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), SensorEventListener {
 
     val didPlayerLose = MutableLiveData(false)
-
     private lateinit var runnable : Runnable
     private var counterScore: Int = 0
-    private var counterFpsBirdImageChange = 0
     private var counterFpsRocketVisibility = 0
     private var textPaint = Paint().apply {
         color = Color.BLACK
@@ -33,28 +35,15 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
         isAntiAlias = true
     }
 
-    private var bird = Bird()
-    private var cloud = Cloud()
-    private var rocket = Rocket()
-    private var bomb = Bomb()
+    private val cloud by lazy { injector.cloud }
+    private val rocket by lazy { injector.rocket }
+    private val bomb by lazy { injector.bomb }
+    private val bird by lazy { injector.bird }
 
-    private val cloudImage = getImageBitmap(cloud.cloudImage)
-    private val bombImage = getImageBitmap(bomb.bombImage)
-    private val rocketImage = getImageBitmap(rocket.rocketImage)
-    private val birdImage1 = getImageBitmap(bird.birdImage1)
-    private val birdImage2 = getImageBitmap(bird.birdImage2)
-
-    private val rocketImageScaled: Bitmap = Bitmap.createScaledBitmap(rocketImage,500,260,true)
-    private val bombImageScaled: Bitmap = Bitmap.createScaledBitmap(bombImage,170,190,true)
-    private var birdImageFinal = birdImage1
-
-    private var collisionSoundBirdCloud = MediaPlayer.create(gameView.context, R.raw.bouncesound)
-    private var bombSound = MediaPlayer.create(gameView.context, R.raw.bombsound)
-    private var crashBomb = MediaPlayer.create(gameView.context, R.raw.crashbombsound)
 
     init {
         registerSensorListener()
-
+        resetValues()
         gameView.post {
             bird.setInitialPosition(width)
             cloud.setInitialPosition(width,height)
@@ -83,8 +72,8 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
 
         canvas.apply {
 
-            drawBitmap(birdImageFinal, bird.posx.toFloat() - (birdImageFinal.width /2),bird.posy.toFloat(),null)
-            cloud.draw(cloudImage, this)
+            bird.draw(this)
+            cloud.draw(this)
 
             drawText(counterScore.toString(),
                 width - 240f,
@@ -97,21 +86,21 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
 
                 if(rocket.inScreen(width)){
                     rocket.move()
-                    rocket.draw(this, rocketImageScaled)
+                    rocket.draw( this)
                     bomb.getRandomPosX(width)
                     bomb.visible()
                 }
                 if(bomb.inScreen(rocket)){
-                    bombSound.start()
-                    bomb.draw(this, bombImageScaled)
+                    bomb.bombSound.start()
+                    bomb.draw(this)
                     bomb.updatePosY()
 
                     if (bomb.outOfScreen(height)){
                         rocket.restoreToPosXIni()
                         rocket.hide()
-                        bombSound.stop()
-                        bombSound.prepareAsync()
-                        crashBomb.start()
+                        bomb.bombSound.stop()
+                        bomb.bombSound.prepareAsync()
+                        bomb.crashBomb.start()
                         bomb.restoreToPosYIni()
                         bomb.hide()
                         counterFpsRocketVisibility = 0
@@ -120,45 +109,28 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
             }
             counterFpsRocketVisibility += 1
 
-            changeImageBirdFps()
             checkCollisionBirdBomb()
             checkCollisionBirdCloud()
             checkLoser()
         }
     }
 
-    private fun getImageBitmap(image:Int) = BitmapFactory.decodeResource(context?.resources,image)
-
-
     private fun startAnimation(){
         post(runnable)
     }
 
-
     private fun stopAnimation(){
         removeCallbacks(runnable)
-    }
-
-    private fun changeImageBirdFps(){
-        if (counterFpsBirdImageChange >= 15){
-            birdImageFinal = if(birdImageFinal == birdImage1){
-                birdImage2
-            }else{
-                birdImage1
-            }
-            counterFpsBirdImageChange = 0
-        }
-        counterFpsBirdImageChange += 1
     }
 
 
     private fun checkCollisionBirdCloud(){
         if (
             abs(cloud.posy - bird.posy) <= 150 &&
-            bird.posx >= (cloud.posx - birdImageFinal.width / 2) &&
-            bird.posx <= (cloud.posx + cloudImage.width - (birdImageFinal.width / 2))){
+            bird.posx >= (cloud.posx - bird.imageWidth() / 2) &&
+            bird.posx <= (cloud.posx + cloud.cloudImage.width - (bird.imageWidth() / 2))){
                 bird.updateVelocityOnCollision()
-                collisionSoundBirdCloud.start()
+                bird.collisionSoundBirdCloud.start()
                 cloud.resetPosition(height, width)
         }
     }
@@ -166,13 +138,13 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
     private fun checkCollisionBirdBomb(){
         if(bomb.visibility) {
             if (
-                bird.posx + birdImageFinal.width / 2 - 100 >= bomb.posx &&
-                bird.posx - birdImageFinal.width / 2 + 100 <= bomb.posx + bombImageScaled.width ){
+                bird.posx + bird.imageWidth()/ 2 - 100 >= bomb.posx &&
+                bird.posx - bird.imageWidth() / 2 + 100 <= bomb.posx + bomb.bombImage.width ){
                 if(
-                    bird.posy <= bomb.posy + bombImageScaled.height - 100 &&
-                    bird.posy >= bomb.posy - birdImageFinal.height + 100){
-                        bombSound.stop()
-                        bombSound.prepareAsync()
+                    bird.posy <= bomb.posy + bomb.bombImage.height - 100 &&
+                    bird.posy >= bomb.posy - bird.imageHeight() + 100){
+                        bomb.bombSound.stop()
+                        bomb.bombSound.prepareAsync()
                         stopAnimation()
                         didPlayerLose.value = true
                 }
@@ -197,5 +169,12 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
     }
 
     private fun timeToLaunchRocket() = counterFpsRocketVisibility >= 1000
+
+    private fun resetValues(){
+        bomb.resetValues()
+        bird.resetValues()
+        rocket.resetValues()
+        cloud.resetValues()
+    }
 
 }

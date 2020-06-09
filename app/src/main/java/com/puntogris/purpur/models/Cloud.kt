@@ -1,12 +1,18 @@
 package com.puntogris.purpur.models
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.media.MediaPlayer
 import com.puntogris.purpur.R
+import kotlinx.android.synthetic.main.fragment_game.view.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Cloud(var posx: Double = 0.0, var posy: Double = 0.0, var velocity: Double = -10.0){
+class Cloud @Inject constructor(var posx: Double = 0.0, var posy: Double = 0.0, var velocity: Double = -10.0, val context: Context){
 
-    val cloudImage = R.raw.cloud
+    val cloudImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.cloud)
 
     fun updateVelocity(){
         posy += velocity
@@ -22,8 +28,15 @@ class Cloud(var posx: Double = 0.0, var posy: Double = 0.0, var velocity: Double
         posy = height.toDouble()
     }
 
-    fun draw(cloudImage:Bitmap, canvas: Canvas){
-        canvas.drawBitmap(cloudImage,posx.toFloat()-(cloudImage.width / 2),posy.toFloat(),null)
+    fun draw(canvas: Canvas){
+        canvas.drawBitmap(cloudImage,posx.toFloat() - (cloudImage.width / 2),posy.toFloat(),null)
     }
+
+    fun resetValues(){
+        posx = 0.0
+        posy = 500.0
+        velocity = -10.0
+    }
+
 
 }

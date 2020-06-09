@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.puntogris.purpur.R
@@ -23,14 +24,18 @@ class PostGameFragment : Fragment() {
     ): View? {
         val binding:FragmentPostGameBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_game, container, false)
 
-        binding.scoreTextView.text = viewModel.playerScore.toString()
-
-        binding.playAgainButton.setOnClickListener {
-            findNavController().navigate(R.id.gameFragment)
+        binding.let {
+            it.lifecycleOwner = viewLifecycleOwner
+            it.viewModel = this.viewModel
+            it.postGameFragment = this
         }
 
         return binding.root
 
+    }
+
+    fun navigateToGame(){
+        findNavController().navigate(R.id.gameFragment)
     }
 
 }
