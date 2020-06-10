@@ -6,6 +6,7 @@ Used in this project:</br>
   * MVVM
   * Canvas
   * Music
+  * Dagger
  
 ![N|Solid](https://github.com/puntogris/purpur/blob/master/screenshots/1.webp)
 ![N|Solid](https://github.com/puntogris/purpur/blob/master/screenshots/2.webp)

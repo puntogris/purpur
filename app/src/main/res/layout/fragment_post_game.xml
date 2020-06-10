@@ -25,11 +25,11 @@
                    android:id="@+id/postGameText1"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="116dp"
+                   android:layout_marginTop="144dp"
                    android:layout_weight="15"
                    android:gravity="center|bottom"
-                   android:text="@string/post_game_text1"
-                   android:textSize="30sp"
+                   android:text="@string/post_game_text"
+                   android:textSize="35sp"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toTopOf="parent" />
@@ -38,27 +38,15 @@
                    android:id="@+id/scoreTextView"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="45dp"
+                   android:layout_marginTop="35dp"
                    android:layout_weight="10"
                    android:gravity="center"
+                   android:textColor="@android:color/black"
                    android:text="@{String.valueOf(viewModel.playerScore)}"
                    android:textSize="50sp"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/postGameText1" />
-
-           <TextView
-                   android:id="@+id/postGameText2"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="45dp"
-                   android:layout_weight="15"
-                   android:gravity="center|top"
-                   android:text="@string/post_game_text2"
-                   android:textSize="30sp"
-                   app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintStart_toStartOf="parent"
-                   app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
 
 
            <ImageView

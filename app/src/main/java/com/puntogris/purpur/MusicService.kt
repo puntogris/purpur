@@ -7,28 +7,23 @@ import android.os.IBinder
 
 
 class MusicService: Service() {
-    private lateinit var player: MediaPlayer
+    private lateinit var backgroundMusic: MediaPlayer
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        player.start()
+        backgroundMusic.start()
         return START_STICKY
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
-    }
+    override fun onBind(p0: Intent?): IBinder? = null
 
     override fun onCreate() {
-        player = MediaPlayer.create(this, R.raw.backgroundmusic)
-
-
+        backgroundMusic = MediaPlayer.create(this, R.raw.backgroundmusic)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        player.stop()
-        player.release()
+        backgroundMusic.stop()
+        backgroundMusic.release()
     }
-
 
 }

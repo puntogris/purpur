@@ -12,7 +12,6 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.puntogris.purpur.di.injector
 import kotlinx.android.synthetic.main.fragment_game.view.*
-import kotlin.math.abs
 
 class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), SensorEventListener {
 
@@ -24,7 +23,6 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
         textSize = 80f
         isAntiAlias = true
     }
-
     private val cloud by lazy { injector.cloud }
     private val rocket by lazy { injector.rocket }
     private val bomb by lazy { injector.bomb }
@@ -54,41 +52,47 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int){
     }
 
-    override fun onSensorChanged(p0: SensorEvent?) {
-        val positionZ = (p0!!.values[0] * -1)
-        println(positionZ)
-        if(positionZ < -1) bird.moveLeft()
-        else if(positionZ > 1) bird.moveRight()
+    override fun onSensorChanged(sensor: SensorEvent?) {
+        sensor?.let {
+            val positionZ = (it.values[0] * -1)
+            if(positionZ < -1) bird.moveLeft()
+            else if(positionZ > 1) bird.moveRight()
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
         canvas.apply {
-
             bird.draw(this)
             cloud.draw(this)
-
-            drawText(counterScore.toString(),width - 240f,200f, textPaint )
-
-            if(rocket.timeToLaunch()){
-                rocket.visible()
-                if(rocket.inScreen(width)){
-                    rocket.draw( this)
-                    bomb.drop(width)
-                }
-                if(bomb.inScreen(rocket)){
-                    bomb.draw(this)
-                    if (bomb.outOfScreen(height)){
-                        bomb.explodeSequence()
-                        rocket.resetValues()
-                    }
-                }
-            }
-            checkCollisionBirdBomb()
-            checkCollisionBirdCloud()
+            drawScore()
+            rocketManager()
+            if (bird.collideWithCloud(cloud)) cloud.resetPosition(height,width)
             checkLoser()
         }
+    }
+
+    private fun Canvas.rocketManager(){
+        if(rocket.timeToLaunch()){
+            rocket.visible()
+            if(rocket.inScreen(width)){
+                rocket.draw(this)
+                bomb.drop(width)
+            }
+            if(bomb.inScreen(rocket)){
+                checkCollisionBirdBomb()
+                bomb.draw(this)
+                if (bomb.outOfScreen(height)){
+                    bomb.explodeSequence()
+                    rocket.resetValues()
+                }
+            }
+        }
+    }
+
+
+    private fun Canvas.drawScore(){
+        drawText(counterScore.toString(),width - 240f,200f, textPaint )
     }
 
     private fun startAnimation(){
@@ -98,33 +102,11 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
     private fun stopAnimation(){
         removeCallbacks(runnable)
     }
-
-    private fun checkCollisionBirdCloud(){
-        if (
-            abs(cloud.posy - bird.posy) <= 150 &&
-            bird.posx >= (cloud.posx - bird.imageWidth() / 2) &&
-            bird.posx <= (cloud.posx + cloud.image.width - (bird.imageWidth() / 2))){
-                bird.updateVelocityOnCollision()
-                bird.collisionSoundBirdCloud.start()
-                cloud.resetPosition(height, width)
-        }
-    }
-
     private fun checkCollisionBirdBomb(){
-        if(bomb.visibility) {
-            if (
-                bird.posx + bird.imageWidth()/ 2 - 100 >= bomb.posx &&
-                bird.posx - bird.imageWidth() / 2 + 100 <= bomb.posx + bomb.imageScaled.width ){
-                if(
-                    bird.posy <= bomb.posy + bomb.imageScaled.height - 100 &&
-                    bird.posy >= bomb.posy - bird.imageHeight() + 100){
-                        bomb.bombSound.stop()
-                        bomb.bombSound.prepareAsync()
-                        stopAnimation()
-                        didPlayerLose.value = true
-                        sensorManager.unregisterListener(this)
-                }
-            }
+        if (bird.collideWithBomb(bomb)){
+            stopAnimation()
+            didPlayerLose.value = true
+            sensorManager.unregisterListener(this)
         }
     }
 

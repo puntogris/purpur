@@ -24,7 +24,7 @@ class Cloud @Inject constructor(var posx: Double = 0.0, var posy: Double = 0.0, 
     }
 
     fun setInitialPosition(width: Int, height: Int){
-        posx = width/ 2.0
+        posx = width / 2.0
         posy = height.toDouble()
     }
 

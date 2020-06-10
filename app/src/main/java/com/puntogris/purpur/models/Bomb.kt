@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.media.MediaPlayer
+import com.puntogris.purpur.MusicService
 import com.puntogris.purpur.R
 import kotlinx.android.synthetic.main.fragment_game.view.*
 import javax.inject.Inject

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class GameViewModel:ViewModel() {
+class GameViewModel: ViewModel() {
 
     private val _playerScore = MutableLiveData<String>()
     val playerScore:LiveData<String> = _playerScore
