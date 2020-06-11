@@ -28,12 +28,10 @@ private lateinit var binding: FragmentGameBinding
             if (it) navigateToPostGame()
         })
         return binding.root
-
-
     }
 
     private fun navigateToPostGame(){
-        viewModel.updateScore(binding.gameView.returnScore())
+        viewModel.updateScore(binding.gameView.environment.returnScore())
         findNavController().navigate(R.id.action_gameFragment_to_postGameFragment)
     }
 

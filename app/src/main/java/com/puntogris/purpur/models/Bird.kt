@@ -1,20 +1,10 @@
 package com.puntogris.purpur.models
 
-import android.content.Context
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.media.MediaPlayer
-import com.puntogris.purpur.R
-import kotlin.math.abs
 import javax.inject.Inject
 
-class Bird @Inject constructor(var posx: Double = 0.0 ,var posy: Double = 500.0 ,var velocity: Double = 1.0, val context: Context?){
+class Bird @Inject constructor(var posx: Double,var posy: Double,var velocity: Double){
 
-    private val birdImage1 = BitmapFactory.decodeResource(context?.resources, R.raw.bird1)
-    private val birdImage2 = BitmapFactory.decodeResource(context?.resources, R.raw.bird2)
-    private var birdImageFinal = birdImage1
-    private val collisionSoundBirdCloud: MediaPlayer = MediaPlayer.create(context, R.raw.bouncesound)
-    private var animationCounter = 0
+    var animationCounter = 0
 
     fun updateVelocity(){
         velocity += 0.5
@@ -25,7 +15,7 @@ class Bird @Inject constructor(var posx: Double = 0.0 ,var posy: Double = 500.0 
         posx = width / 2.0
     }
 
-    private fun updateVelocityOnCollision(){
+    fun updateVelocityOnCollision(){
         velocity *= -1
         velocity -= 0.5
     }
@@ -36,61 +26,11 @@ class Bird @Inject constructor(var posx: Double = 0.0 ,var posy: Double = 500.0 
         velocity = 1.0
     }
 
-    fun draw(canvas: Canvas){
-        changeImageBirdFps()
-        canvas.drawBitmap(birdImageFinal, posx.toFloat() - (birdImageFinal.width /2),posy.toFloat(),null)
-    }
-
-    private fun changeImageBirdFps(){
-        if (animationCounter >= 15){
-            birdImageFinal = if(birdImageFinal == birdImage1){
-                birdImage2
-            }else{
-                birdImage1
-            }
-            animationCounter = 0
-        }
-         animationCounter += 1
-    }
-
-    private fun imageWidth() = birdImageFinal.width
-    private fun imageHeight() = birdImageFinal.height
-
     fun moveLeft(){
         posx -= 2
     }
     fun moveRight(){
         posx += 2
     }
-
-     fun collideWithCloud(cloud: Cloud): Boolean{
-        if (
-            abs(cloud.posy - posy) <= 150 &&
-            posx >= (cloud.posx - imageWidth() / 2) &&
-            posx <= (cloud.posx + cloud.image.width - (imageWidth() / 2))) {
-            updateVelocityOnCollision()
-            collisionSoundBirdCloud.start()
-            return true
-        }
-         return false
-    }
-
-    fun collideWithBomb(bomb:Bomb): Boolean{
-        if(bomb.visibility) {
-            if (
-                posx + imageWidth()/ 2 - 100 >= bomb.posx &&
-                posx - imageWidth() / 2 + 100 <= bomb.posx + bomb.imageScaled.width ){
-                if(
-                    posy <= bomb.posy + bomb.imageScaled.height - 100 &&
-                    posy >= bomb.posy - imageHeight() + 100){
-                    bomb.bombSound.stop()
-                    bomb.bombSound.prepareAsync()
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
 
 }

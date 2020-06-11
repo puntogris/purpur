@@ -7,3 +7,4 @@ interface InjectorProvider{
 }
 
 val GameView.injector get() = (context.applicationContext as InjectorProvider).component
+
