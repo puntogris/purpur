@@ -2,28 +2,24 @@ package com.puntogris.purpur
 
 import android.app.Service
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.IBinder
-
+import com.puntogris.purpur.di.injector
 
 class MusicService: Service() {
-    private lateinit var backgroundMusic: MediaPlayer
+    private val musicEnv by lazy { injector.musicEnv }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        backgroundMusic.start()
+        musicEnv.backgroundMusic.start()
         return START_STICKY
     }
 
     override fun onBind(p0: Intent?): IBinder? = null
 
-    override fun onCreate() {
-        backgroundMusic = MediaPlayer.create(this, R.raw.backgroundmusic)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        backgroundMusic.stop()
-        backgroundMusic.release()
+        musicEnv.apply {
+            backgroundMusic.stop()
+            backgroundMusic.prepare()
+        }
     }
-
 }

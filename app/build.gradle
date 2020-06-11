@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -17,7 +16,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -48,27 +47,24 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
-    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'androidx.test:core:1.2.0'
 
-    implementation "androidx.fragment:fragment-ktx:1.2.4"
+    //Ktx
+    implementation "androidx.activity:activity-ktx:1.1.0"
+
+    //Mockk
     testImplementation "io.mockk:mockk:1.10.0"
 
-    // Optional -- Robolectric environment
-    testImplementation 'androidx.test:core:1.0.0'
-
+    //Junit5
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.2"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.6.2"
 
+    //Kluent assertion
     testImplementation 'org.amshove.kluent:kluent:1.61'
-
-    // for Android:
     testImplementation 'org.amshove.kluent:kluent-android:1.61'
-
-    // To get JUnit errors from kotlin.test, to e.g. enable diff windows in failure messages
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
     //Dagger
     implementation "com.google.dagger:dagger:2.28"

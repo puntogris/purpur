@@ -1,5 +1,6 @@
 package com.puntogris.purpur.di
 
+import com.puntogris.purpur.MusicService
 import com.puntogris.purpur.ui.GameView
 
 interface InjectorProvider{
@@ -7,4 +8,4 @@ interface InjectorProvider{
 }
 
 val GameView.injector get() = (context.applicationContext as InjectorProvider).component
-
+val MusicService.injector get() = (applicationContext as InjectorProvider).component

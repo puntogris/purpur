@@ -2,6 +2,8 @@ package com.puntogris.purpur.utils
 
 
 import android.graphics.Canvas
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.puntogris.purpur.models.Bird
 import com.puntogris.purpur.models.Bomb
 import com.puntogris.purpur.models.Cloud
@@ -9,25 +11,30 @@ import com.puntogris.purpur.models.Rocket
 import javax.inject.Inject
 import kotlin.math.abs
 
-class GameEnvironment @Inject constructor(val cloud: Cloud, val rocket: Rocket, val bomb: Bomb, val bird: Bird, val drawer: EnvironmentDrawer) {
+class GameEnvironment @Inject constructor(private val drawer: EnvironmentDrawer, private val music: EnvironmentMusic) {
+
+    val bird = Bird(-200.0 , -200.0 ,1.0)
+    val cloud = Cloud(-200.0,-200.0,10.0)
+    private val bomb = Bomb(-500F,200F, false)
+    private val rocket = Rocket(-700F,200F,false)
 
     private fun imageWidth() = drawer.birdImageFinal.width
     private fun imageHeight() = drawer.birdImageFinal.height
     private var height = 0
     private var width = 0
-    private var counterScore: Int = 0
-
-    fun returnScore() = counterScore.toString()
+    private var _counterScore = MutableLiveData(0)
+    val counterScore: LiveData<Int> = _counterScore
 
     fun updateScore(){
-        counterScore += 1
+        _counterScore.value = counterScore.value!! + 1
     }
 
     fun setDimensEnvironment(height: Int, width: Int){
         this.height = height
         this.width = width
-        bird.setInitialPosition(width)
-        cloud.setInitialPosition(width,height)    }
+        bird.resetValues(width)
+        cloud.setInitialPosition(width,height)
+    }
 
     fun checkCollisionBirdBomb(): Boolean{
         if(bomb.visibility) {
@@ -37,8 +44,8 @@ class GameEnvironment @Inject constructor(val cloud: Cloud, val rocket: Rocket, 
                 if(
                     bird.posy <= bomb.posy + drawer.bombImageScaled.height - 100 &&
                     bird.posy >= bomb.posy - imageHeight() + 100){
-                    drawer.bombSound.stop()
-                    drawer.bombSound.prepareAsync()
+                    music.bombSound.stop()
+                    music.bombSound.prepare()
                     return true
                 }
             }
@@ -52,19 +59,18 @@ class GameEnvironment @Inject constructor(val cloud: Cloud, val rocket: Rocket, 
             bird.posx >= (cloud.posx - imageWidth() / 2) &&
             bird.posx <= (cloud.posx + drawer.cloudImage.width - (imageWidth() / 2))) {
             bird.updateVelocityOnCollision()
-            drawer.collisionSoundBirdCloud.start()
-            cloud.resetPosition(height,width)
+            music.collisionSoundBirdCloud.start()
+            cloud.resetValues(width, height)
         }
     }
 
     private fun explodeSequence(){
-        drawer.apply {
+        music.apply {
             bombSound.stop()
-            bombSound.prepareAsync()
+            bombSound.prepare()
             crashBomb.start()
         }
-        bomb.restoreToPosYIni()
-        bomb.hide()
+        bomb.resetValues()
         rocket.resetValues()
     }
 
@@ -79,7 +85,7 @@ class GameEnvironment @Inject constructor(val cloud: Cloud, val rocket: Rocket, 
             if(bomb.inScreen(rocket)){
                 checkCollisionBirdBomb()
                 drawer.draw(canvas,bomb)
-                drawer.bombSound.start()
+                music.bombSound.start()
                 bomb.move()
                 if (bomb.outOfScreen(height)){
                     explodeSequence()
@@ -102,16 +108,17 @@ class GameEnvironment @Inject constructor(val cloud: Cloud, val rocket: Rocket, 
 
     fun draw(canvas: Canvas){
         drawer.apply {
-            draw(canvas,bird)
-            draw(canvas,cloud)
-            draw(canvas, counterScore.toString(), width)
+            draw(canvas, bird)
+            draw(canvas, cloud)
+            draw(canvas, counterScore.value.toString(), width)
         }
     }
 
     fun reset(){
-        bird.resetValues()
+        _counterScore.value = 0
+        bird.resetValues(width)
         bomb.resetValues()
         rocket.resetValues()
-        cloud.resetValues()
+        cloud.setInitialPosition(width, height)
     }
 }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Purpur</string>
     <string name="post_game_text">Tu puntaje es..</string>
+    <string name="button_image_content_description">button image</string>
+    <string name="post_game_view_content_description">post game view</string>
 
 
 </resources>

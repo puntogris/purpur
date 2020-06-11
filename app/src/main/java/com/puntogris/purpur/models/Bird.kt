@@ -11,17 +11,13 @@ class Bird @Inject constructor(var posx: Double,var posy: Double,var velocity: D
         posy += velocity
     }
 
-    fun setInitialPosition(width: Int){
-        posx = width / 2.0
-    }
-
     fun updateVelocityOnCollision(){
         velocity *= -1
         velocity -= 0.5
     }
 
-    fun resetValues(){
-        posx = 0.0
+    fun resetValues(width: Int){
+        posx = width / 2.toDouble()
         posy = 500.0
         velocity = 1.0
     }

@@ -13,13 +13,10 @@ import javax.inject.Inject
 class EnvironmentDrawer @Inject constructor(context: Context){
     //Cloud
     val cloudImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.cloud)
-    val collisionSoundBirdCloud: MediaPlayer = MediaPlayer.create(context, R.raw.bouncesound)
 
     //Bomb
     private val bombImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.bombimage)
     val bombImageScaled: Bitmap = Bitmap.createScaledBitmap(bombImage,170,190,true)
-    val bombSound: MediaPlayer = MediaPlayer.create(context, R.raw.bombsound)
-    val crashBomb: MediaPlayer = MediaPlayer.create(context, R.raw.crashbombsound)
 
     //Rocket
     private val rocketImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.rocket)

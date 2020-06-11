@@ -8,8 +8,8 @@ class Cloud @Inject constructor(var posx: Double, var posy: Double , var velocit
         posy -= velocity
     }
 
-    fun resetPosition(height: Int, width:Int){
-        posx =  (0..width).random().toDouble()
+    fun resetValues(width:Int, height: Int){
+        posx = (0..width).random().toDouble()
         posy = height + 130.0
     }
 
@@ -18,10 +18,5 @@ class Cloud @Inject constructor(var posx: Double, var posy: Double , var velocit
         posy = height.toDouble()
     }
 
-    fun resetValues(){
-        posx = 0.0
-        posy = 500.0
-        velocity = 10.0
-    }
 
 }

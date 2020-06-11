@@ -7,10 +7,6 @@ class Bomb @Inject constructor(var posx : Float, var posy: Float, var visibility
     fun move(){
         posy += 7
     }
-
-    fun restoreToPosYIni(){
-        posy = 200f
-    }
     fun getRandomPosX(width: Int){
         if(!visibility) posx = (100..width - 100).random().toFloat()
     }
@@ -29,10 +25,8 @@ class Bomb @Inject constructor(var posx : Float, var posy: Float, var visibility
         posy = 200F
         hide()
     }
-
     fun drop(width: Int){
         getRandomPosX(width)
         visible()
     }
-
 }

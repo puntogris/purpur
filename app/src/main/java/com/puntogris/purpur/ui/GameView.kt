@@ -11,22 +11,16 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.puntogris.purpur.di.injector
-import kotlinx.android.synthetic.main.fragment_game.view.*
 
 class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), SensorEventListener {
 
-    private lateinit var runnable : Runnable
     val environment by lazy { injector.gameEnvironment }
+    private lateinit var runnable : Runnable
     val didPlayerLose = MutableLiveData(false)
-    private val sensorManager: SensorManager =
-        (context!!.getSystemService(SENSOR_SERVICE) as SensorManager).apply {
-            registerListener(this@GameView, getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_FASTEST)
-    }
+    private val sensorManager: SensorManager = (context!!.getSystemService(SENSOR_SERVICE) as SensorManager)
 
     init {
-        resetEnvironment()
-        gameView.post {
+        post {
             environment.setDimensEnvironment(height,width)
         }
         runnable = Runnable {
@@ -38,7 +32,20 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
         startAnimation()
     }
 
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int){
+    fun startGame(){
+        didPlayerLose.value = false
+        startAnimation()
+        registerSensorListener()
+
+    }
+
+    //Sensor Manager && Listener
+    private fun registerSensorListener(){
+        sensorManager.registerListener(this@GameView, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_FASTEST)
+    }
+    private fun unregisterSensorListener(){
+        sensorManager.unregisterListener(this)
     }
 
     override fun onSensorChanged(sensor: SensorEvent?) {
@@ -49,6 +56,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
         }
     }
 
+    //Drawing by the Environment Drawer Class
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         environment.apply {
@@ -61,6 +69,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
         }
     }
 
+    //Runner Management
     private fun startAnimation(){
         post(runnable)
     }
@@ -68,24 +77,25 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
     private fun stopAnimation(){
         removeCallbacks(runnable)
     }
+
+    //Checks
     private fun checkCollisionBirdBomb(){
         if (environment.checkCollisionBirdBomb()){
             stopAnimation()
             didPlayerLose.value = true
-            sensorManager.unregisterListener(this)
+            unregisterSensorListener()
         }
     }
 
     private fun checkLoser() {
         if (environment.bird.posy >= height) {
             stopAnimation()
+            environment.cloud.setInitialPosition(width,height)
+            unregisterSensorListener()
             didPlayerLose.value = true
-            sensorManager.unregisterListener(this)
 
         }else environment.updateScore()
     }
 
-    private fun resetEnvironment(){
-        environment.reset()
-    }
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int){}
 }
