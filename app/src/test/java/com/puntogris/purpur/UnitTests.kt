@@ -8,7 +8,6 @@ import org.amshove.kluent.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-
 class UnitTests {
 
     private val widthScreen = 700
@@ -41,7 +40,6 @@ class UnitTests {
             cloud.posy`should be equal to` heightScreen + 130.0
             cloud.velocity`should be equal to` 10.0
         }
-
 
     }
     @Nested

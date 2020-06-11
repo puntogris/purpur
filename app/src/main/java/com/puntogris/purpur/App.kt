@@ -12,4 +12,3 @@ class App : Application(), InjectorProvider {
             .create(applicationContext)
     }
 }
-
