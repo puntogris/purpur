@@ -1,8 +1,6 @@
 package com.puntogris.purpur.di
 
 import android.content.Context
-import com.puntogris.purpur.MusicService
-import com.puntogris.purpur.models.*
 import com.puntogris.purpur.utils.EnvironmentDrawer
 import com.puntogris.purpur.utils.EnvironmentMusic
 import com.puntogris.purpur.utils.GameEnvironment

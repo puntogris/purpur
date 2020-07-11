@@ -1,4 +1,4 @@
-package com.puntogris.purpur
+package com.puntogris.purpur.utils
 
 import android.app.Service
 import android.content.Intent

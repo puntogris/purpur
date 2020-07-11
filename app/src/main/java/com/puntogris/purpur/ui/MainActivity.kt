@@ -5,14 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.puntogris.purpur.MusicService
+import com.puntogris.purpur.utils.MusicService
 import com.puntogris.purpur.R
 import com.puntogris.purpur.databinding.ActivityMainBinding
-
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(){
 private lateinit var binding: ActivityMainBinding

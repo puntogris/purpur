@@ -1,6 +1,6 @@
 package com.puntogris.purpur.di
 
-import com.puntogris.purpur.MusicService
+import com.puntogris.purpur.utils.MusicService
 import com.puntogris.purpur.ui.GameView
 
 interface InjectorProvider{
