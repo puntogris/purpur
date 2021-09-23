@@ -1,8 +1,6 @@
 package com.puntogris.purpur.models
 
-import javax.inject.Inject
-
-class Cloud @Inject constructor(var posx: Double, var posy: Double , var velocity: Double){
+class Cloud(var posx: Double, var posy: Double , var velocity: Double){
 
     fun move(){
         posy -= velocity

@@ -1,24 +1,22 @@
 package com.puntogris.purpur.models
 
-import javax.inject.Inject
-
-class Bomb @Inject constructor(var posx : Float, var posy: Float, var visibility: Boolean){
+class Bomb(var posx : Float, var posy: Float, var isVisible: Boolean){
 
     fun move(){
         posy += 7
     }
     fun getRandomPosX(width: Int){
-        if(!visibility) posx = (100..width - 100).random().toFloat()
+        if(!isVisible) posx = (100..width - 100).random().toFloat()
     }
     fun visible(){
-        visibility = true
+        isVisible = true
     }
     fun hide(){
-        visibility = false
+        isVisible = false
     }
     fun outOfScreen(height: Int) = posy > height
 
-    fun inScreen(rocket: Rocket) = rocket.posx > posx && visibility
+    fun inScreen(rocket: Rocket) = rocket.posx > posx && isVisible
 
     fun resetValues(){
         posx = -500F

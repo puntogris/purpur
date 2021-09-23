@@ -1,4 +1,4 @@
-package com.puntogris.purpur.utils
+package com.puntogris.purpur.ui.enviroment
 
 
 import android.graphics.Canvas
@@ -37,7 +37,7 @@ class GameEnvironment @Inject constructor(private val drawer: EnvironmentDrawer,
     }
 
     fun checkCollisionBirdBomb(): Boolean{
-        if(bomb.visibility) {
+        if(bomb.isVisible) {
             if (
                 bird.posx + imageWidth()/ 2 - 100 >= bomb.posx &&
                 bird.posx - imageWidth() / 2 + 100 <= bomb.posx + drawer.bombImageScaled.width ){
@@ -57,7 +57,8 @@ class GameEnvironment @Inject constructor(private val drawer: EnvironmentDrawer,
         if (
             abs(cloud.posy - bird.posy) <= 150 &&
             bird.posx >= (cloud.posx - imageWidth() / 2) &&
-            bird.posx <= (cloud.posx + drawer.cloudImage.width - (imageWidth() / 2))) {
+            bird.posx <= (cloud.posx + drawer.cloudImage.width - (imageWidth() / 2))
+        ) {
             bird.updateVelocityOnCollision()
             music.collisionSoundBirdCloud.start()
             cloud.resetValues(width, height)
@@ -87,23 +88,20 @@ class GameEnvironment @Inject constructor(private val drawer: EnvironmentDrawer,
                 drawer.draw(canvas,bomb)
                 music.bombSound.start()
                 bomb.move()
-                if (bomb.outOfScreen(height)){
-                    explodeSequence()
-                }
+                if (bomb.outOfScreen(height)) explodeSequence()
             }
         }
     }
 
     fun changeBirdAnimation(){
-        if (bird.animationCounter >= 15){
-            drawer.birdImageFinal = if( drawer.birdImageFinal ==  drawer.birdImage1){
-                drawer.birdImage2
-            }else{
-                drawer.birdImage1
+        with(bird){
+            if (animationCounter >= 15){
+                drawer.birdImageFinal =
+                    if(drawer.birdImageFinal == drawer.birdImage1) drawer.birdImage2 else drawer.birdImage1
+                animationCounter = 0
             }
-            bird.animationCounter = 0
+            animationCounter += 1
         }
-        bird.animationCounter += 1
     }
 
     fun draw(canvas: Canvas){

@@ -7,16 +7,16 @@
 
         <variable
             name="activity"
-            type="com.puntogris.purpur.ui.MainActivity" />
+            type="com.puntogris.purpur.ui.main.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.MainActivity">
+            tools:context=".ui.main.MainActivity">
 
-        <com.puntogris.purpur.ui.GameView
+        <com.puntogris.purpur.ui.main.GameView
                 android:id="@+id/gameView"
                 android:background="@drawable/ic_maingame"
                 android:visibility="visible"
@@ -47,7 +47,7 @@
                 android:focusable="true"
                 android:visibility="gone"
                 android:onClick="@{() -> activity.onPlayAgain()}"
-                android:tint="@android:color/transparent"
+                app:tint="@android:color/transparent"
                 android:tintMode="src_in"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

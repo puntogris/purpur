@@ -1,7 +1,7 @@
 package com.puntogris.purpur.di
 
-import com.puntogris.purpur.utils.MusicService
-import com.puntogris.purpur.ui.GameView
+import com.puntogris.purpur.ui.enviroment.MusicService
+import com.puntogris.purpur.ui.main.GameView
 
 interface InjectorProvider{
     val component: AppComponent

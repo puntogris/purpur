@@ -1,8 +1,7 @@
-package com.puntogris.purpur.utils
+package com.puntogris.purpur.ui.enviroment
 
 import android.content.Context
 import android.graphics.*
-import android.media.MediaPlayer
 import com.puntogris.purpur.R
 import com.puntogris.purpur.models.Bird
 import com.puntogris.purpur.models.Bomb
@@ -11,23 +10,19 @@ import com.puntogris.purpur.models.Rocket
 import javax.inject.Inject
 
 class EnvironmentDrawer @Inject constructor(context: Context){
-    //Cloud
+
     val cloudImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.cloud)
 
-    //Bomb
     private val bombImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.bombimage)
     val bombImageScaled: Bitmap = Bitmap.createScaledBitmap(bombImage,170,190,true)
 
-    //Rocket
     private val rocketImage: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.rocket)
     private val rocketImageScaled: Bitmap = Bitmap.createScaledBitmap(rocketImage,500,260,true)
 
-    //Bird
     val birdImage1: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.bird1)
     val birdImage2: Bitmap = BitmapFactory.decodeResource(context.resources, R.raw.bird2)
     var birdImageFinal = birdImage1
 
-    //Text
     private val textPaint = Paint().apply {
         color = Color.BLACK
         textSize = 80f

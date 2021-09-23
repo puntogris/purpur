@@ -1,8 +1,6 @@
 package com.puntogris.purpur.models
 
-import javax.inject.Inject
-
-class Bird @Inject constructor(var posx: Double,var posy: Double,var velocity: Double){
+class Bird (var posx: Double,var posy: Double,var velocity: Double){
 
     var animationCounter = 0
 

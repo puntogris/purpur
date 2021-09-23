@@ -11,8 +11,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".ui.MainActivity"
-                android:screenOrientation="portrait">
+                android:name=".ui.main.MainActivity"
+                android:screenOrientation="portrait"
+                android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -21,7 +22,7 @@
         </activity>
         <service
                 android:enabled="true"
-                android:name="com.puntogris.purpur.utils.MusicService" />
+                android:name="com.puntogris.purpur.ui.enviroment.MusicService" />
     </application>
 
 </manifest>

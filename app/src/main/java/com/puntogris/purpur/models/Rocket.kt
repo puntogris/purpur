@@ -1,8 +1,6 @@
 package com.puntogris.purpur.models
 
-import javax.inject.Inject
-
-class Rocket @Inject constructor(var posx : Float, var posy: Float , var visibility: Boolean){
+class Rocket(var posx : Float, var posy: Float , var isVisibility: Boolean){
 
     var launchCounter = 0
     private val limitToLaunch = 700
@@ -12,12 +10,12 @@ class Rocket @Inject constructor(var posx : Float, var posy: Float , var visibil
     }
 
     fun visible() {
-        visibility = true
+        isVisibility = true
     }
     fun hide(){
-        visibility = false
+        isVisibility = false
     }
-    fun inScreen(width: Int)= posx < width && visibility
+    fun inScreen(width: Int)= posx < width && isVisibility
 
     fun resetValues(){
         posx = -700F

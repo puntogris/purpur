@@ -5,8 +5,9 @@ import com.puntogris.purpur.models.Bomb
 import com.puntogris.purpur.models.Cloud
 import com.puntogris.purpur.models.Rocket
 import org.amshove.kluent.*
+import org.junit.Test
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+
 
 class UnitTests {
 
@@ -54,16 +55,16 @@ class UnitTests {
 
         @Test
         fun `should hide bomb`(){
-            bomb.visibility = true
+            bomb.isVisible = true
             bomb.hide()
-            bomb.visibility`should be equal to` false
+            bomb.isVisible`should be equal to` false
         }
 
         @Test
         fun `should show bomb`(){
-            bomb.visibility = false
+            bomb.isVisible = false
             bomb.visible()
-            bomb.visibility`should be equal to` true
+            bomb.isVisible`should be equal to` true
         }
 
         @Test
@@ -75,21 +76,21 @@ class UnitTests {
 
         @Test
         fun `is bomb in the screen`(){
-            bomb.visibility = true
+            bomb.isVisible = true
             rocket.posx = 600f
             bomb.posx = 500f
             bomb.inScreen(rocket)`should be equal to` true
-            bomb.visibility = false
+            bomb.isVisible = false
             bomb.inScreen(rocket)`should be equal to` false
             rocket.posx = 400f
-            bomb.visibility = true
+            bomb.isVisible = true
             bomb.inScreen(rocket)`should be equal to` false
 
         }
 
         @Test
         fun `should set random pos x for bomb`(){
-            bomb.visibility = false
+            bomb.isVisible = false
             bomb.getRandomPosX(widthScreen)
             bomb.posx.`should be in range`(100f, widthScreen - 100f)
         }
@@ -99,14 +100,14 @@ class UnitTests {
             bomb.should {
                 posx`should be equal to` -500f
                 posy`should be equal to` 200f
-                visibility`should be equal to` false
+                isVisible`should be equal to` false
                 true
             }
         }
         @Test
         fun `should show the bomb and update x position`(){
             bomb.drop(widthScreen)
-            bomb.visibility`should be equal to` true
+            bomb.isVisible`should be equal to` true
         }
     }
     @Nested
@@ -120,23 +121,23 @@ class UnitTests {
 
         @Test
         fun `should show the rocket`(){
-            rocket.visibility = false
+            rocket.isVisibility = false
             rocket.visible()
-            rocket.visibility`should be equal to` true
+            rocket.isVisibility`should be equal to` true
         }
         @Test
         fun `should hide the rocket`(){
-            rocket.visibility = true
+            rocket.isVisibility = true
             rocket.hide()
-            rocket.visibility`should be equal to` false
+            rocket.isVisibility`should be equal to` false
         }
         @Test
         fun `is rocket in the screen`(){
             rocket.posx = -200f
-            rocket.visibility = false
+            rocket.isVisibility = false
             rocket.inScreen(widthScreen)`should be equal to` false
             rocket.posx = -200f
-            rocket.visibility = true
+            rocket.isVisibility = true
             rocket.inScreen(widthScreen)`should be equal to` true
         }
         @Test

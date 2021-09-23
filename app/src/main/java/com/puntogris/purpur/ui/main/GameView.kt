@@ -1,4 +1,4 @@
-package com.puntogris.purpur.ui
+package com.puntogris.purpur.ui.main
 
 import android.content.Context
 import android.content.Context.SENSOR_SERVICE
@@ -36,7 +36,6 @@ class GameView(context: Context?, attrs: AttributeSet?) : View(context, attrs), 
         didPlayerLose.value = false
         startAnimation()
         registerSensorListener()
-
     }
 
     //Sensor Manager && Listener

@@ -4,11 +4,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import org.junit.Test
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.puntogris.purpur.ui.MainActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.puntogris.purpur.ui.main.MainActivity
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
